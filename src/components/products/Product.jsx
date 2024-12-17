@@ -69,15 +69,19 @@ const Product = () => {
         <div>
             <h1>Product Management</h1>
             <form onSubmit={handleSubmit}>
+            <label htmlFor="name">Name:&nbsp;</label>
                 <input type="text" placeholder='Name' value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })} />
+                    <label htmlFor="description">Description:&nbsp;</label>
                 <input type="text" placeholder='Description' value={formData.description}
                     onChange={(e) => setFormData({ ...formData, description: e.target.value })} />
+                    <label htmlFor="price">Price:&nbsp;</label>
                 <input type="number" placeholder='Price' value={formData.price}
                     onChange={(e) => setFormData({ ...formData, price: e.target.value })} />
                     <label htmlFor="warranty">Warranty&nbsp;</label>
                 <input type="checkbox" checked={formData.warranty}
                     onChange={(e) => setFormData({ ...formData, warranty: e.target.checked })}/>
+                    <label htmlFor="brand">Brand:&nbsp;</label>
                 <input type="text" placeholder='Brand' value={formData.brand}
                     onChange={(e) => setFormData({ ...formData, brand: e.target.value })} />
                 <button type="submit">
@@ -85,16 +89,16 @@ const Product = () => {
                 </button>
             </form>
 
-            <table>
+            <table className='table-auto border-collapse border border-gray-300 w-full'>
                 <thead>
                     <tr>
-                        <th>Name</th>
-                        <th>Description</th>
-                        <th>Price</th>
-                        <th>Warranty</th>
-                        <th>Brand</th>
-                        <th>Edit</th>
-                        <th>Delete</th>
+                        <th className='border border-gray-300 px-4 py-2 text-left'>Name</th>
+                        <th className='border border-gray-300 px-4 py-2 text-left'>Description</th>
+                        <th className='border border-gray-300 px-4 py-2 text-left'>Price</th>
+                        <th className='border border-gray-300 px-4 py-2 text-left'>Warranty</th>
+                        <th className='border border-gray-300 px-4 py-2 text-left'>Brand</th>
+                        <th className='border border-gray-300 px-4 py-2 text-left'>Edit</th>
+                        <th className='border border-gray-300 px-4 py-2 text-left'>Delete</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -102,20 +106,24 @@ const Product = () => {
 
                     { products && products.map((product) => (
                         <tr key={product._id} >
-                            <td className='text-black' >{product.name}</td><br/>
-                            <td >{product.description}</td><br/>
-                            <td >{product.price}</td><br/>
-                            <td >{product.warranty ? 'Yes' : 'No'}</td><br/>
-                            <td >{product.brand}</td>
-                            <td>
+                            <td className='border border-gray-300 px-4 py-2' >{product.name}</td>
+                            <td className='border border-gray-300 px-4 py-2'>{product.description}</td>
+                            <td className='border border-gray-300 px-4 py-2'>{product.price}</td>
+                            <td className='border border-gray-300 px-4 py-2'>{product.warranty ? 'Yes' : 'No'}</td>
+                            <td className='border border-gray-300 px-4 py-2'>{product.brand}</td>
+                            <td className='border border-gray-300 px-4 py-2'>
                                 <button
                                     onClick={() => handleEdit(product)}
+                                    className=' px-8 py-2 bg-blue-700 text-white rounded'
 
                                 >
                                     Edit
-                                </button>
+                                </button></td><td className='border border-gray-300 px-4 py-2'>
                                 <button
                                     onClick={() => handleDelete(product._id)}
+                                    className='border border-gray-300 px-4 py-2 bg-blue-700 text-white rounded'
+
+                                    
 
                                 >
                                     Delete
