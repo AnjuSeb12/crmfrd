@@ -10,36 +10,56 @@ const Product = () => {
         name: "",
         description: "",
         price: "",
-        warranty: "false",
+        warranty: false,
         brand: ""
     });
     const [editProduct, setEditProduct] = useState(null);
+    
+    const fetchProducts= async ()=>{
+        try {
+            console.log("hitted")
+            const response=await axios.get('http://localhost:5000/api/v1/product/getproduct')
+            console.log("products",response.data)
+            setProducts(response.data)
+            
+        } catch (error) {
+            console.log('Error:',error)
+            
+        }
+    }
 
-    const fetchProduct = async () => {
-        const fetchData = await axios.get('/api/v1/product/addproduct')
-        setProducts(fetchData)
-    };
+    
     useEffect(() => {
-        fetchProduct()
+        
+        fetchProducts();
     }, [])
 
     const handleDelete = async (id) => {
-        await axios.delete(`/api/v1/product/deleteproduct`)
-        fetchProduct();
+        await axios.delete(`http://localhost:5000/api/v1/product/deleteproduct/${id}`)
+        fetchProducts();
     }
     const handleEdit = (product) => {
         setEditProduct(product);
-        setFormData(product);
+        setFormData({
+            name: product.name,
+            description: product.description,
+            price: product.price,
+            warranty: product.warranty,
+            brand: product.brand
+        });
+
     }
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (editProduct) {
-            await axios.put(`/api/products/update/${editProduct._id}`, formData);
+            await axios.put(`http://localhost:5000/api/v1/product/updateproduct/${editProduct._id}`, formData,{
+                
+            });
         } else {
-            await axios.post('/api/products/add', formData);
+            await axios.post('http://localhost:5000/api/v1/product/addproduct', formData);
         }
-        fetchProduct();
-        setFormData({ name: '', description: '', price: '', warranty: 'false', brand: '' });
+        fetchProducts();
+        setFormData({ name: '', description: '', price: '', warranty: false, brand: '' });
         setEditProduct(null);
     };
 
@@ -55,6 +75,7 @@ const Product = () => {
                     onChange={(e) => setFormData({ ...formData, description: e.target.value })} />
                 <input type="number" placeholder='Price' value={formData.price}
                     onChange={(e) => setFormData({ ...formData, price: e.target.value })} />
+                    <label htmlFor="warranty">Warranty&nbsp;</label>
                 <input type="checkbox" checked={formData.warranty}
                     onChange={(e) => setFormData({ ...formData, warranty: e.target.checked })}/>
                 <input type="text" placeholder='Brand' value={formData.brand}
@@ -72,14 +93,16 @@ const Product = () => {
                         <th>Price</th>
                         <th>Warranty</th>
                         <th>Brand</th>
+                        <th>Edit</th>
+                        <th>Delete</th>
                     </tr>
                 </thead>
                 <tbody>
 
 
-                    { products.map((product) => (
-                        <tr key={product._id}>
-                            <td >{product.name}</td><br/>
+                    { products && products.map((product) => (
+                        <tr key={product._id} >
+                            <td className='text-black' >{product.name}</td><br/>
                             <td >{product.description}</td><br/>
                             <td >{product.price}</td><br/>
                             <td >{product.warranty ? 'Yes' : 'No'}</td><br/>
